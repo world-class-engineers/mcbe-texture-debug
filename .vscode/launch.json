@@ -1,0 +1,11 @@
+{
+  "version": "0.3.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "attach",
+      "port": 9988,
+      "name": "Debug with Minecraft"
+    }
+  ]
+}

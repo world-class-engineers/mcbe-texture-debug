@@ -1,0 +1,620 @@
+{
+  "namespace": "collect_everything",
+
+  "collection_browser_screen": {
+    "type": "panel",
+    "size": ["100%", "100%"],
+    "controls": [{ "collection_browser_modal@collection_browser_modal": {} }],
+    "bindings": [
+      { "binding_name": "#title_text" },
+      {
+        "binding_type": "view",
+        // only show when special data header is sent on the title
+        "source_property_name": "(not ((#title_text - $collect_everything_data_prefix) = #title_text))",
+        "target_property_name": "#visible"
+      }
+    ]
+  },
+
+  "collection_browser_modal": {
+    "type": "stack_panel",
+    "orientation": "vertical",
+    "size": [325, 177],
+    "controls": [{ "top_panel@top_panel": {} }, { "main_panel@main_panel": {} }]
+  },
+
+  "top_panel": {
+    "type": "panel",
+    "size": [325, 20],
+    "anchor_from": "top_left",
+    "anchor_to": "top_left",
+    "controls": [{ "category_buttons@category_buttons": {} }, { "top_right_panel@top_right_panel": {} }]
+  },
+
+  "button_highlight_dark_background_white_foreground": {
+    "type": "custom",
+    "renderer": "gradient_renderer",
+    "color1": [0.58, 0.58, 0.58, 1],
+    "color2": [0.58, 0.58, 0.58, 1],
+    "size": ["100%", "100%"]
+  },
+
+  "tooltip@common.hover_text": {
+    // TODO: THIS DOES NOT WORK AT ALL RIGHT NOW... NEED TO FIGURE OUT HOW TO FIX IT
+    // for accessibility and discoverability
+  },
+
+  "toolbar_button@common.button": {
+    "$pressed_button_name": "button.form_button_click",
+    "$icon_control|default": "settings_icon",
+    "$tooltip_text|default": "",
+    "size": [15, 15],
+    "offset": [0, -5],
+    "layer": 2,
+    "default_control": "default_button",
+    "hover_control": "hover_button",
+    "pressed_control": "pressed_button",
+    "anchor_from": "center",
+    "anchor_to": "center",
+    "bindings": [
+      {
+        "binding_name": "#null",
+        "binding_type": "collection",
+        "binding_condition": "none",
+        "binding_collection_name": "form_buttons"
+      },
+      {
+        "binding_name": "#null",
+        "binding_type": "collection_details",
+        "binding_collection_name": "form_buttons"
+      },
+      {
+        "binding_name": "#form_button_text",
+        "binding_type": "collection",
+        "binding_collection_name": "form_buttons"
+      }
+    ],
+    "controls": [
+      {
+        "default_button": {
+          "type": "panel",
+          "controls": [{ "icon@$icon_control": {} }]
+        }
+      },
+      {
+        "hover_button": {
+          "type": "panel",
+          "controls": [
+            { "highlight@button_highlight_dark_background_white_foreground": {} },
+            { "icon@$icon_control": {} },
+            { "tooltip@tooltip": { "$tooltip_text": "($tooltip_text)" } }
+          ]
+        }
+      },
+      {
+        "pressed_button": {
+          "type": "panel",
+          "controls": [
+            { "highlight@button_highlight_dark_background_white_foreground": {} },
+            { "icon@$icon_control": {} }
+          ]
+        }
+      }
+    ]
+  },
+
+  "settings_icon": {
+    "type": "image",
+    "texture": "textures/ui/settings",
+    "size": [8, 6]
+  },
+
+  "help_icon": {
+    "type": "label",
+    "text": "?",
+    "size": [6, 10]
+  },
+
+  "search_icon": {
+    "type": "image",
+    "texture": "textures/ui/search",
+    "size": [8, 8]
+  },
+
+  "recent_icon": {
+    "type": "image",
+    "texture": "textures/ui/recent",
+    "size": [9, 9]
+  },
+
+  "top_right_panel": {
+    "type": "image",
+    "texture": "textures/ui/TabTopBackRightMostDark",
+    "size": [85, 24],
+    "offset": [-2, 0],
+    "anchor_from": "top_right",
+    "anchor_to": "top_right",
+    "layer": 0,
+    "controls": [
+      {
+        "top_right_buttons": {
+          "type": "stack_panel",
+          "anchor_from": "top_right",
+          "anchor_to": "top_right",
+          "offset": [-5, 4],
+          "orientation": "horizontal",
+          "collection_name": "form_buttons",
+          "controls": [
+            // IMPORTANT: these hardcoded indexes need
+            // to stay in sync with button insertion order
+            // from script side
+            {
+              "search_button@toolbar_button": {
+                "$icon_control": "search_icon",
+                "$tooltip_text": "Search",
+                "collection_index": 9
+              }
+            },
+            {
+              "recent_button@toolbar_button": {
+                "$icon_control": "recent_icon",
+                "$tooltip_text": "Recent",
+                "collection_index": 10
+              }
+            },
+            {
+              "settings_button@toolbar_button": {
+                "$icon_control": "settings_icon",
+                "$tooltip_text": "Settings",
+                "collection_index": 11
+              }
+            },
+            {
+              "help_button@toolbar_button": {
+                "$icon_control": "help_icon",
+                "$tooltip_text": "Help",
+                "collection_index": 12
+              }
+            },
+            {
+              "close_button@common.light_close_button": { "size": [15, 15] }
+            }
+          ]
+        }
+      }
+    ]
+  },
+
+  "modal_title": {
+    "type": "label",
+    "text": "#display_text",
+    "color": "$title_text_color",
+    "anchor_from": "top_left",
+    "anchor_to": "top_left",
+    "bindings": [
+      {
+        "binding_type": "view",
+        // remove data header from title string
+        "source_property_name": "(#title_text - ('%.122s' * #title_text))",
+        "target_property_name": "#display_text"
+      }
+    ]
+  },
+
+  "difficulty_label": {
+    "type": "label",
+    "$text|default": "",
+    "$value|default": "",
+    "text": "$text",
+    "color": "$title_text_color",
+    "anchor_from": "top_right",
+    "anchor_to": "top_right",
+    "offset": [-11, 0],
+    "bindings": [
+      {
+        "binding_type": "view",
+        "source_property_name": "((('%.49s' * #title_text) - ('%.48s' * #title_text)) = $value)",
+        "target_property_name": "#visible"
+      }
+    ]
+  },
+
+  "category_buttons": {
+    "type": "stack_panel",
+    "orientation": "horizontal",
+    "size": ["100%c", "100%c"],
+    "offset": [2, -1],
+    "anchor_from": "top_left",
+    "anchor_to": "top_left",
+    "layer": 1,
+    "collection_name": "form_buttons",
+    "controls": [
+      // IMPORTANT: these use hard-coded indexes; we need to make sure these
+      // stay in sync with the order they are added to the buttons array
+      // on the script side
+      { "all_tab@inventory_slot_tab": { "collection_index": 0 } },
+      { "items_tab@inventory_slot_tab": { "collection_index": 1 } },
+      { "biomes_tab@inventory_slot_tab": { "collection_index": 2 } },
+      { "entities_tab@inventory_slot_tab": { "collection_index": 3 } },
+      { "effects_tab@inventory_slot_tab": { "collection_index": 4 } },
+      { "enchantments_tab@inventory_slot_tab": { "collection_index": 5 } },
+      { "unobtainables_tab@inventory_slot_tab": { "collection_index": 6 } }
+    ]
+  },
+
+  "inventory_slot_tab@common.button": {
+    "$pressed_button_name": "button.form_button_click",
+    "size": [24, 26],
+    "default_control": "inventory_tab_default_view",
+    "hover_control": "inventory_tab_hover_view",
+    "pressed_control": "inventory_tab_pressed_view",
+    "bindings": [
+      {
+        "binding_name": "#null",
+        "binding_type": "collection",
+        "binding_condition": "none",
+        "binding_collection_name": "form_buttons"
+      },
+      {
+        "binding_name": "#null",
+        "binding_type": "collection_details",
+        "binding_collection_name": "form_buttons"
+      }
+    ],
+    "controls": [
+      { "inventory_tab_default_view@inventory_slot_tab_default": {} },
+      { "inventory_tab_hover_view@inventory_slot_tab_hover": { "$hover": true } },
+      { "inventory_tab_pressed_view@inventory_slot_tab_hover": { "$pressed": true } }
+    ]
+  },
+
+  "inventory_slot_tab_default": {
+    "type": "panel",
+    "size": ["100%", "100%"],
+    "bindings": [
+      {
+        "binding_name": "#null",
+        "binding_type": "collection",
+        "binding_condition": "none",
+        "binding_collection_name": "form_buttons"
+      },
+      {
+        "binding_name": "#null",
+        "binding_type": "collection_details",
+        "binding_collection_name": "form_buttons"
+      }
+    ],
+    "controls": [
+      {
+        "inventory_slot_tab_inactive@inventory_slot_tab_inactive": {
+          "bindings": [
+            {
+              "binding_name": "#null",
+              "binding_type": "collection",
+              "binding_condition": "none",
+              "binding_collection_name": "form_buttons"
+            },
+            {
+              "binding_name": "#null",
+              "binding_type": "collection_details",
+              "binding_collection_name": "form_buttons"
+            },
+            {
+              "binding_type": "view",
+              // binding to activeIndex: (#collection_index !== activeIndex)
+              "source_property_name": "(not (#collection_index = (('%.35s' * #title_text) - ('%.33s' * #title_text) * 1)))",
+              "target_property_name": "#visible"
+            }
+          ]
+        }
+      },
+      {
+        "inventory_slot_tab_active@inventory_slot_tab_active": {
+          "bindings": [
+            {
+              "binding_name": "#null",
+              "binding_type": "collection",
+              "binding_condition": "none",
+              "binding_collection_name": "form_buttons"
+            },
+            {
+              "binding_name": "#null",
+              "binding_type": "collection_details",
+              "binding_collection_name": "form_buttons"
+            },
+            {
+              "binding_type": "view",
+              // binding to activeIndex: (#collection_index === activeIndex)
+              // for some reason this only works if we don't multiply by 1
+              "source_property_name": "(#collection_index = (('%.35s' * #title_text) - ('%.33s' * #title_text)))",
+              "target_property_name": "#visible"
+            }
+          ]
+        }
+      }
+    ]
+  },
+
+  "inventory_slot_tab_active": {
+    "type": "image",
+    "texture": "textures/ui/TabTopFront",
+    "size": ["100%", "100%"],
+    "$hover|default": false,
+    "$pressed|default": false,
+    "controls": [{ "item@inventory_item": { "offset": [0, -1] } }]
+  },
+
+  "inventory_slot_tab_inactive": {
+    "type": "image",
+    "texture": "textures/ui/TabTopBack",
+    "size": ["100%", "100%"],
+    "$hover|default": false,
+    "$pressed|default": false,
+    "controls": [{ "item@inventory_item": { "offset": [0, -1] } }]
+  },
+
+  "inventory_slot_tab_hover": {
+    "type": "image",
+    "texture": "textures/ui/TabTopFrontHover",
+    "size": ["100%", "100%"],
+    "$hover|default": false,
+    "$pressed|default": false,
+    "controls": [{ "item@inventory_item": { "offset": [0, -1] } }]
+  },
+
+  "main_panel": {
+    "type": "image",
+    "texture": "textures/ui/dialog_background_opaque",
+    "size": ["100%", "100%"],
+    "layer": 0,
+    "controls": [
+      {
+        "main_contents": {
+          "type": "panel",
+          "size": ["100%", "100%"],
+          "offset": [6, 9],
+          "anchor_from": "top_left",
+          "anchor_to": "top_left",
+          "controls": [
+            { "modal_title@modal_title": {} },
+            {
+              "basic_difficulty_label@difficulty_label": {
+                "$text": "Basic",
+                "$value": 0
+              }
+            },
+            {
+              "committed_difficulty_label@difficulty_label": {
+                "$text": "Committed",
+                "$value": 1
+              }
+            },
+            {
+              "insane_difficulty_label@difficulty_label": {
+                "$text": "Insane",
+                "$value": 2
+              }
+            },
+            { "@gap": { "size": [0, 3] } },
+            { "@collection_browser_items_panel": {} }
+          ]
+        }
+      }
+    ]
+  },
+
+  "collection_browser_items_panel": {
+    "type": "image",
+    "texture": "textures/ui/dialog_inset_background",
+    "offset": [0, 12],
+    "anchor_from": "top_left",
+    "anchor_to": "top_left",
+    "size": [313, 150],
+    "controls": [{ "@collection_browser_grid_wrapper": {} }, { "@collection_browser_pagination": {} }]
+  },
+
+  "collection_browser_pagination": {
+    "type": "panel",
+    "size": [55, 17],
+    "offset": [0, -3],
+    "anchor_from": "bottom_middle",
+    "anchor_to": "bottom_middle",
+    "controls": [
+      {
+        "previous_button@pagination_button": {
+          "$texture_path_default": "textures/ui/page_previous",
+          "$texture_path_active": "textures/ui/page_previous_active",
+          "anchor_from": "left_middle",
+          "anchor_to": "left_middle",
+          "property_bag": {
+            // IMPORTANT: these hardcoded indexes need
+            // to stay in sync with button insertion order
+            // from script side
+            "#collection_index": 7,
+            "#collection_name": "form_buttons"
+          },
+          "bindings": [
+            {
+              "binding_type": "view",
+              "source_property_name": "((#title_text - '|hasPrevious|:0') = #title_text)",
+              "target_property_name": "#visible"
+            }
+          ]
+        }
+      },
+      { "page_label@page_label": {} },
+      {
+        "next_button@pagination_button": {
+          "$texture_path_default": "textures/ui/page_next",
+          "$texture_path_active": "textures/ui/page_next_active",
+          "anchor_from": "right_middle",
+          "anchor_to": "right_middle",
+          "property_bag": {
+            // IMPORTANT: these hardcoded indexes need
+            // to stay in sync with button insertion order
+            // from script side
+            "#collection_index": 8,
+            "#collection_name": "form_buttons"
+          },
+          "bindings": [
+            {
+              "binding_type": "view",
+              "source_property_name": "((#title_text - '|hasNext|:0') = #title_text)",
+              "target_property_name": "#visible"
+            }
+          ]
+        }
+      }
+    ]
+  },
+
+  "pagination_button_image": {
+    "type": "image",
+    "$texture_path|default": "",
+    "texture": "$texture_path",
+    "size": [11, 17],
+    "layer": 10
+  },
+
+  "pagination_button@common.button": {
+    "$pressed_button_name": "button.form_button_click",
+    "$texture_path_default|default": "",
+    "$texture_path_active|default": "",
+    "size": [11, 17],
+    "layer": 10,
+    "default_control": "default",
+    "hover_control": "hover",
+    "pressed_control": "pressed",
+    "controls": [
+      { "default@pagination_button_image": { "$texture_path": "$texture_path_default" } },
+      { "hover@pagination_button_image": { "$texture_path": "$texture_path_active" } },
+      { "pressed@pagination_button_image": { "$texture_path": "$texture_path_active" } }
+    ],
+    "bindings": [
+      {
+        "binding_name": "#null",
+        "binding_type": "collection",
+        "binding_condition": "none",
+        "binding_collection_name": "form_buttons"
+      },
+      {
+        "binding_name": "#null",
+        "binding_type": "collection_details",
+        "binding_collection_name": "form_buttons"
+      },
+      {
+        "binding_name": "#form_button_text",
+        "binding_type": "collection",
+        "binding_collection_name": "form_buttons"
+      }
+    ]
+  },
+
+  // "previous_page_button": {
+  //   "type": "image",
+  //   "texture": "textures/ui/page_previous",
+  //   "anchor_from": "left_middle",
+  //   "anchor_to": "left_middle",
+  //   "bindings": [
+  //     {
+  //       "binding_type": "view",
+  //       "source_property_name": "((#title_text - '|hasPrevious|:0') = #title_text)",
+  //       "target_property_name": "#visible"
+  //     }
+  //   ]
+  // },
+
+  // "next_page_button": {
+  //   "type": "image",
+  //   "texture": "textures/ui/page_next",
+  //   "size": [11, 17],
+  //   "anchor_from": "right_middle",
+  //   "anchor_to": "right_middle",
+  //   "color": [1, 1, 1, 1],
+  //   "layer": 10,
+  //   "bindings": [
+  //     {
+  //       "binding_type": "view",
+  //       "source_property_name": "((#title_text - '|hasNext|:0') = #title_text)",
+  //       "target_property_name": "#visible"
+  //     }
+  //   ]
+  // },
+
+  "page_label": {
+    "type": "stack_panel",
+    "orientation": "horizontal",
+    "anchor_from": "center_middle",
+    "anchor_to": "center_middle",
+    "size": ["default", 7],
+    "offset": [0, -1],
+    "layer": 10,
+    "controls": [
+      {
+        "page_number_label": {
+          "type": "label",
+          "text": "#page_number",
+          "color": [1, 1, 1, 1],
+          "layer": 10,
+          "bindings": [
+            {
+              "binding_type": "view",
+              "source_property_name": "(('§z') + (('%.107s' * #title_text) - ('%.105s' * #title_text)))",
+              "target_property_name": "#page_number"
+            }
+          ]
+        }
+      },
+      {
+        "divider_label": {
+          "type": "label",
+          "text": "/",
+          "color": [1, 1, 1, 1],
+          "layer": 10
+        }
+      },
+      {
+        "total_pages_label": {
+          "type": "label",
+          "text": "#total_pages",
+          "color": [1, 1, 1, 1],
+          "layer": 10,
+          "bindings": [
+            {
+              "binding_type": "view",
+              "source_property_name": "(('§z') + (('%.122s' * #title_text) - ('%.120s' * #title_text)))",
+              "target_property_name": "#total_pages"
+            }
+          ]
+        }
+      }
+    ]
+  },
+
+  "collection_browser_grid_wrapper": {
+    "type": "panel",
+    "size": [306, 126],
+    "offset": [3, 3],
+    "anchor_from": "top_left",
+    "anchor_to": "top_left",
+    "clips_children": true,
+    "controls": [{ "grid@collection_browser_grid": { "size": [315, 134] } }]
+  },
+
+  "collection_browser_grid": {
+    "type": "grid",
+    "size": [306, 144],
+    "min_size": [306, 144],
+    "max_size": [306, 144],
+    "offset": [0, -18],
+    "anchor_from": "top_left",
+    "anchor_to": "top_left",
+    "grid_item_template": "collect_everything.inventory_slot_button",
+    "collection_name": "form_buttons",
+    "$item_collection_name": "form_buttons",
+    "grid_rescaling_type": "none",
+    "grid_dimensions": [17, 8]
+  },
+
+  "gap": { "type": "panel" }
+}

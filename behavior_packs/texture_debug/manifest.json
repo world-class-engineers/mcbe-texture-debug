@@ -1,0 +1,34 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "Texture Debug v0.0.1",
+    "description": "A Minecraft Bedrock add-on for debugging textures.",
+    "uuid": "1911b502-efbf-491b-9612-5e68c2afe33c",
+    "version": [0, 0, 1],
+    "min_engine_version": [1, 26, 30]
+  },
+  "modules": [
+    {
+      "type": "data",
+      "uuid": "5e877643-ecf1-4f0f-99fe-e566352a2f48",
+      "version": [0, 0, 1]
+    },
+    {
+      "type": "script",
+      "language": "javascript",
+      "uuid": "0c5b66dd-7ea8-4b20-9cf6-551ccb2bdff8",
+      "entry": "scripts/main.js",
+      "version": [0, 0, 1]
+    }
+  ],
+  "dependencies": [
+    {
+      "module_name": "@minecraft/server",
+      "version": "2.8.0"
+    },
+    {
+      "module_name": "@minecraft/server-ui",
+      "version": "2.1.0"
+    }
+  ]
+}
