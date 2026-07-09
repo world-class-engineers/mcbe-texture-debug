@@ -4,7 +4,7 @@
   "texture_debug_screen": {
     "type": "panel",
     "size": ["100%", "100%"],
-    "controls": [{ "texture_debug_modal@texture_debug_modal": {} }],
+    "controls": [{ "texture_debug_modal@texture_debug.texture_debug_modal": {} }],
     "bindings": [
       { "binding_name": "#title_text" },
       {
@@ -20,7 +20,8 @@
     "type": "stack_panel",
     "orientation": "vertical",
     "size": [325, 177],
-    "controls": [{ "top_panel@top_panel": {} }, { "main_panel@main_panel": {} }]
+    "layer": 15,
+    "controls": [{ "top_panel@texture_debug.top_panel": {} }, { "main_panel@texture_debug.main_panel": {} }]
   },
 
   "top_panel": {
@@ -28,7 +29,7 @@
     "size": [325, 20],
     "anchor_from": "top_left",
     "anchor_to": "top_left",
-    "controls": [{ "top_right_panel@top_right_panel": {} }]
+    "controls": [{ "top_right_panel@texture_debug.top_right_panel": {} }]
   },
 
   "button_highlight_dark_background_white_foreground": {
@@ -73,15 +74,15 @@
       {
         "default_button": {
           "type": "panel",
-          "controls": [{ "icon@$icon_control": {} }]
+          "controls": [{ "icon@texture_debug.$icon_control": {} }]
         }
       },
       {
         "hover_button": {
           "type": "panel",
           "controls": [
-            { "highlight@button_highlight_dark_background_white_foreground": {} },
-            { "icon@$icon_control": {} }
+            { "highlight@texture_debug.button_highlight_dark_background_white_foreground": {} },
+            { "icon@texture_debug.$icon_control": {} }
           ]
         }
       },
@@ -89,8 +90,8 @@
         "pressed_button": {
           "type": "panel",
           "controls": [
-            { "highlight@button_highlight_dark_background_white_foreground": {} },
-            { "icon@$icon_control": {} }
+            { "highlight@texture_debug.button_highlight_dark_background_white_foreground": {} },
+            { "icon@texture_debug.$icon_control": {} }
           ]
         }
       }
@@ -125,7 +126,7 @@
             // to stay in sync with button insertion order
             // from script side
             {
-              "settings_button@toolbar_button": {
+              "settings_button@texture_debug.toolbar_button": {
                 "$icon_control": "settings_icon",
                 "$tooltip_text": "Settings",
                 "collection_index": 2
@@ -169,7 +170,11 @@
           "offset": [6, 9],
           "anchor_from": "top_left",
           "anchor_to": "top_left",
-          "controls": [{ "modal_title@modal_title": {} }, { "@gap": { "size": [0, 3] } }, { "@items_panel": {} }]
+          "controls": [
+            { "modal_title@texture_debug.modal_title": {} },
+            { "@gap": { "size": [0, 3] } },
+            { "@items_panel": {} }
+          ]
         }
       }
     ]
