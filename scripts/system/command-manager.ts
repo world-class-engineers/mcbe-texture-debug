@@ -1,22 +1,28 @@
-import { container, inject, injectAll, registry, singleton } from "tsyringe";
-import { ADD_ON_COMMANDS_TOKEN, AddOnCommand, CommandHandler, customCommandStatuses } from "./add-on-command";
+import { DependencyContainer, inject, injectAll, Lifecycle, registry, scoped } from "tsyringe";
+import {
+  TEXTURE_DEBUG_ADD_ON_COMMANDS_TOKEN,
+  AddOnCommand,
+  CommandHandler,
+  customCommandStatuses,
+} from "./add-on-command";
 import { debugTextureIdsCommand } from "./debug-commands/debug-texture-ids.command";
 import { debugSettingsCommand } from "./debug-commands/debug-settings.command";
 import type { CustomCommandOrigin, CustomCommandResult, StartupEvent, System } from "@minecraft/server";
-import { SYSTEM_TOKEN } from "../shared/global-tokens";
+import { TEXTURE_DEBUG_CONTAINER_TOKEN, TEXTURE_DEBUG_SYSTEM_TOKEN } from "../shared/global-tokens";
 import { Disposable } from "../shared/disposable";
-import { Logger } from "../shared/logging/logger";
+import { TextureDebugLogger } from "../shared/logging/logger";
 
 @registry([
-  { token: ADD_ON_COMMANDS_TOKEN, useValue: debugTextureIdsCommand },
-  { token: ADD_ON_COMMANDS_TOKEN, useValue: debugSettingsCommand },
+  { token: TEXTURE_DEBUG_ADD_ON_COMMANDS_TOKEN, useValue: debugTextureIdsCommand },
+  { token: TEXTURE_DEBUG_ADD_ON_COMMANDS_TOKEN, useValue: debugSettingsCommand },
 ])
-@singleton()
-export class CommandManager implements Disposable {
+@scoped(Lifecycle.ContainerScoped)
+export class TextureDebugCommandManager implements Disposable {
   constructor(
-    @inject(Logger) private readonly logger: Logger,
-    @inject(SYSTEM_TOKEN) private readonly system: System,
-    @injectAll(ADD_ON_COMMANDS_TOKEN) private readonly commands: AddOnCommand<CommandHandler>[]
+    @inject(TEXTURE_DEBUG_CONTAINER_TOKEN) private readonly container: DependencyContainer,
+    @inject(TextureDebugLogger) private readonly logger: TextureDebugLogger,
+    @inject(TEXTURE_DEBUG_SYSTEM_TOKEN) private readonly system: System,
+    @injectAll(TEXTURE_DEBUG_ADD_ON_COMMANDS_TOKEN) private readonly commands: AddOnCommand<CommandHandler>[]
   ) {}
 
   onStartUp(event: StartupEvent) {
@@ -30,7 +36,7 @@ export class CommandManager implements Disposable {
 
   onCommand(origin: CustomCommandOrigin, command: AddOnCommand<CommandHandler>, args: any[]): CustomCommandResult {
     try {
-      const handler = container.resolve(command.handlerClass as any) as CommandHandler;
+      const handler = this.container.resolve(command.handlerClass as any) as CommandHandler;
       return handler.handleCommand(origin, args);
     } catch (err) {
       return {

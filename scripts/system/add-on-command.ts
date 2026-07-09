@@ -119,8 +119,9 @@ export const customCommandParamType = {
   String: "String" as CustomCommandParamType,
 };
 
-export const ADD_ON_COMMANDS_TOKEN: InjectionToken<AddOnCommand<CommandHandler>> = Symbol("all the custom commands");
-export const COMMAND_HANDLER_CLASSES_TOKEN: InjectionToken<Class<CommandHandler>> = Symbol(
+export const TEXTURE_DEBUG_ADD_ON_COMMANDS_TOKEN: InjectionToken<AddOnCommand<CommandHandler>> =
+  Symbol("all the custom commands");
+export const TEXTURE_DEBUG_COMMAND_HANDLER_CLASSES_TOKEN: InjectionToken<Class<CommandHandler>> = Symbol(
   "all the command handler classes for dispatching at runtime"
 );
 

@@ -1,6 +1,6 @@
-import { inject, singleton } from "tsyringe";
-import { WorldStorage } from "../shared/storage";
-import { Logger } from "../shared/logging/logger";
+import { inject, Lifecycle, scoped, singleton } from "tsyringe";
+import { TextureDebugWorldStorage } from "../shared/storage";
+import { TextureDebugLogger } from "../shared/logging/logger";
 
 const CUSTOM_ITEM_COUNT_KEY = "texture_debug:custom_item_count";
 const MIN_ID_KEY = "texture_debug:min_id";
@@ -15,11 +15,11 @@ export interface TextureIdsSettings {
   maxId: number;
 }
 
-@singleton()
+@scoped(Lifecycle.ContainerScoped)
 export class TextureIdsSettingsService {
   constructor(
-    @inject(WorldStorage) private readonly worldStorage: WorldStorage,
-    @inject(Logger) private readonly logger: Logger
+    @inject(TextureDebugWorldStorage) private readonly worldStorage: TextureDebugWorldStorage,
+    @inject(TextureDebugLogger) private readonly logger: TextureDebugLogger
   ) {}
 
   getCustomItemCount(): number {

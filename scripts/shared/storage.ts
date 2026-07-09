@@ -1,12 +1,12 @@
 import type { Player, World } from "@minecraft/server";
 import { inject, Lifecycle, scoped, singleton } from "tsyringe";
-import { PLAYER_TOKEN, WORLD_TOKEN } from "./global-tokens";
-import { Logger } from "./logging/logger";
+import { TEXTURE_DEBUG_PLAYER_TOKEN, TEXTURE_DEBUG_WORLD_TOKEN as TEXTURE_DEBUG_WORLD_TOKEN } from "./global-tokens";
+import { TextureDebugLogger } from "./logging/logger";
 
 export abstract class StorageBase {
   constructor(
     private readonly storageSource: World | Player,
-    private readonly logger?: Logger
+    private readonly logger?: TextureDebugLogger
   ) {}
 
   get<T>(key: string): T | undefined {
@@ -29,16 +29,19 @@ export abstract class StorageBase {
   }
 }
 
-@singleton()
-export class WorldStorage extends StorageBase {
-  constructor(@inject(WORLD_TOKEN) world: World, @inject(Logger) logger: Logger) {
+@scoped(Lifecycle.ContainerScoped)
+export class TextureDebugWorldStorage extends StorageBase {
+  constructor(@inject(TEXTURE_DEBUG_WORLD_TOKEN) world: World, @inject(TextureDebugLogger) logger: TextureDebugLogger) {
     super(world, logger);
   }
 }
 
 @scoped(Lifecycle.ContainerScoped)
 export class PlayerStorage extends StorageBase {
-  constructor(@inject(PLAYER_TOKEN) player: Player, @inject(Logger) logger: Logger) {
+  constructor(
+    @inject(TEXTURE_DEBUG_PLAYER_TOKEN) player: Player,
+    @inject(TextureDebugLogger) logger: TextureDebugLogger
+  ) {
     super(player, logger);
   }
 }

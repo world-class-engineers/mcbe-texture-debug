@@ -8,4 +8,6 @@ export type DDUI = {
   ObservableString: typeof ObservableString;
 };
 
-export const DDUI_TOKEN: InjectionToken<DDUI> = Symbol("access to DDUI components of the @minecraft/server package");
+export const TEXTURE_DEBUG_DDUI_TOKEN: InjectionToken<DDUI> = Symbol(
+  "access to DDUI components of the @minecraft/server package"
+);

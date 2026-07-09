@@ -3,7 +3,7 @@ import type { CreateActionFormFn } from "../../shared/global-tokens";
 import { encodeItemData } from "../../ui/data-encoder";
 import { RESET } from "../../shared/format-codes";
 import type { ActionFormResponse } from "@minecraft/server-ui";
-import { Logger } from "../../shared/logging/logger";
+import { TextureDebugLogger } from "../../shared/logging/logger";
 
 // any time these schemas change, we need to also change the form
 // use this tool to help:
@@ -30,7 +30,7 @@ export class CollectionBrowserFormData {
 
   constructor(
     private readonly createActionForm: CreateActionFormFn,
-    @inject(Logger) private readonly logger: Logger
+    @inject(TextureDebugLogger) private readonly logger: TextureDebugLogger
   ) {}
 
   title(text: string): this {

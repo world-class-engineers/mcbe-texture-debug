@@ -1,6 +1,6 @@
 type LogLevels = "debug" | "log" | "warn" | "error";
 
-export const LOG_SETTINGS_STORAGE_KEY = "collecteverything:log_settings";
+export const TEXTURE_DEBUG_LOG_SETTINGS_STORAGE_KEY = "texturedebug:log_settings";
 
 const logSettingsValue = {
   levels: [] as LogLevels[],
@@ -12,7 +12,7 @@ export interface LogSettings {
   set(newSettings: Partial<typeof logSettingsValue>): void;
 }
 
-export const LOG_SETTINGS_TOKEN = Symbol("LOG_SETTINGS_TOKEN");
+export const TEXTURE_DEBUG_LOG_SETTINGS_TOKEN = Symbol("LOG_SETTINGS_TOKEN");
 
 /**
  * Internal: should only be called by Logger instance

@@ -1,21 +1,25 @@
 import { Lifecycle, scoped, inject } from "tsyringe";
-import { PLAYER_TOKEN, SYSTEM_TOKEN, WORLD_TOKEN } from "../global-tokens";
-import { LOG_SETTINGS_TOKEN, LogSettings } from "./log-settings";
+import {
+  TEXTURE_DEBUG_PLAYER_TOKEN as TEXTURE_DEBUG_PLAYER_TOKEN,
+  TEXTURE_DEBUG_SYSTEM_TOKEN as TEXTURE_DEBUG_SYSTEM_TOKEN,
+  TEXTURE_DEBUG_WORLD_TOKEN as TEXTURE_DEBUG_WORLD_TOKEN,
+} from "../global-tokens";
+import { TEXTURE_DEBUG_LOG_SETTINGS_TOKEN as TEXTURE_DEBUG_LOG_SETTINGS_TOKEN, LogSettings } from "./log-settings";
 import type { Player, System, World } from "@minecraft/server";
 import { BLUE, DARK_AQUA, DARK_GRAY, GRAY, GREEN, MINECOIN_GOLD, RED, RESET } from "../format-codes";
+import { NAMESPACE } from "../constants";
 
 @scoped(Lifecycle.ContainerScoped)
-export class Logger {
+export class TextureDebugLogger {
   constructor(
-    @inject(SYSTEM_TOKEN) private readonly system: System,
-    @inject(WORLD_TOKEN) private readonly world: World,
-    @inject(LOG_SETTINGS_TOKEN) private readonly settings: LogSettings,
-    @inject(PLAYER_TOKEN, { isOptional: true }) private readonly player: Player
+    @inject(TEXTURE_DEBUG_SYSTEM_TOKEN) private readonly system: System,
+    @inject(TEXTURE_DEBUG_WORLD_TOKEN) private readonly world: World,
+    @inject(TEXTURE_DEBUG_LOG_SETTINGS_TOKEN) private readonly settings: LogSettings
   ) {}
 
   debug(...messages: any[]) {
     if (!this.settings().levels.includes("debug")) return;
-    this.output(`${this.brackets(GREEN + "debug")} ${this.concat(messages)}`);
+    this.output(`${this.brackets(GRAY + "debug")} ${this.concat(messages)}`);
   }
 
   log(...messages: any[]) {
@@ -42,11 +46,7 @@ export class Logger {
   }
 
   private prefix() {
-    const parts = [this.brackets(DARK_GRAY + this.system.currentTick)];
-    if (this.player) {
-      parts.push(this.brackets(BLUE + this.player.name));
-    }
-    return parts.join("");
+    return [this.brackets(DARK_GRAY + NAMESPACE), this.brackets(DARK_GRAY + this.system.currentTick)].join("");
   }
 
   private output(message: string) {

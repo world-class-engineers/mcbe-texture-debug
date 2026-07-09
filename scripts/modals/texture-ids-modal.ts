@@ -1,7 +1,12 @@
-import { inject, singleton } from "tsyringe";
+import { inject, Lifecycle, scoped, singleton } from "tsyringe";
 import type { ItemTypes, Player, System } from "@minecraft/server";
-import { CREATE_ACTION_FORM_TOKEN, CreateActionFormFn, ITEM_TYPES_TOKEN, SYSTEM_TOKEN } from "../shared/global-tokens";
-import { Logger } from "../shared/logging/logger";
+import {
+  TEXTURE_DEBUG_CREATE_ACTION_FORM_TOKEN,
+  CreateActionFormFn,
+  TEXTURE_DEBUG_ITEM_TYPES_TOKEN,
+  TEXTURE_DEBUG_SYSTEM_TOKEN,
+} from "../shared/global-tokens";
+import { TextureDebugLogger } from "../shared/logging/logger";
 import itemNumericalIds from "./item-numerical-ids.json";
 import { getItemTexture } from "./item-texture";
 import { CollectionBrowserFormData } from "./custom-data-form/custom-data-form";
@@ -19,18 +24,18 @@ interface TextureCacheEntry {
   computedTexture: number;
 }
 
-@singleton()
+@scoped(Lifecycle.ContainerScoped)
 export class TextureIdsModal {
   private currentPage: number = 0;
   private textureCache = new Map<number, string>();
 
   constructor(
-    @inject(SYSTEM_TOKEN) private readonly system: System,
-    @inject(CREATE_ACTION_FORM_TOKEN) private readonly createActionForm: CreateActionFormFn,
+    @inject(TEXTURE_DEBUG_SYSTEM_TOKEN) private readonly system: System,
+    @inject(TEXTURE_DEBUG_CREATE_ACTION_FORM_TOKEN) private readonly createActionForm: CreateActionFormFn,
     @inject(TextureIdsSettingsModal) private readonly settingsModal: TextureIdsSettingsModal,
     @inject(TextureIdsSettingsService) private readonly settingsService: TextureIdsSettingsService,
-    @inject(Logger) private readonly logger: Logger,
-    @inject(ITEM_TYPES_TOKEN) private readonly itemTypes: typeof ItemTypes
+    @inject(TextureDebugLogger) private readonly logger: TextureDebugLogger,
+    @inject(TEXTURE_DEBUG_ITEM_TYPES_TOKEN) private readonly itemTypes: typeof ItemTypes
   ) {}
 
   private invalidateCache(): void {
@@ -50,7 +55,13 @@ export class TextureIdsModal {
   }
 
   async show(player: Player) {
+    const all = this.itemTypes.getAll();
+    const customItems = all.filter((i) => !i.id.startsWith("minecraft:"));
+
     let customItemCount = this.settingsService.getCustomItemCount();
+    this.logger.log(
+      `[texture_debug] detected items:\n\tall: ${all.length}\n\tcustom: ${customItems.length}\n\tsetting: ${customItemCount}`
+    );
     let minId = this.settingsService.getMinId();
     let maxId = this.settingsService.getMaxId();
 

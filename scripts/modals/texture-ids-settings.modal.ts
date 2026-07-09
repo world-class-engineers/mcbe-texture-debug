@@ -1,18 +1,15 @@
-import { inject, singleton } from "tsyringe";
+import { inject, Lifecycle, scoped, singleton } from "tsyringe";
 import type { Player } from "@minecraft/server";
-import { DDUI, DDUI_TOKEN } from "../ui/ui.tokens";
-import { Logger } from "../shared/logging/logger";
+import { DDUI, TEXTURE_DEBUG_DDUI_TOKEN } from "../ui/ui.tokens";
+import { TextureDebugLogger } from "../shared/logging/logger";
 import { TextureIdsSettingsService } from "./texture-ids-settings.service";
 
-const DEFAULT_MIN_ID = 0;
-const DEFAULT_MAX_ID = 9999;
-
-@singleton()
+@scoped(Lifecycle.ContainerScoped)
 export class TextureIdsSettingsModal {
   constructor(
-    @inject(DDUI_TOKEN) private readonly ddui: DDUI,
+    @inject(TEXTURE_DEBUG_DDUI_TOKEN) private readonly ddui: DDUI,
     @inject(TextureIdsSettingsService) private readonly settings: TextureIdsSettingsService,
-    @inject(Logger) private readonly logger: Logger
+    @inject(TextureDebugLogger) private readonly logger: TextureDebugLogger
   ) {}
 
   async show(player: Player): Promise<void> {
@@ -33,18 +30,19 @@ export class TextureIdsSettingsModal {
     });
 
     const form = new this.ddui.CustomForm(player, "Texture IDs Settings")
-      .divider()
-      .label("Custom Item Count")
-      .textField("Count", customItemCount)
-      .label(
-        "The custom item count affects the encoding of item IDs > 255. This value should match the number of custom items registered before this add-on's items."
-      )
-      .divider()
-      .label("ID Range")
-      .textField("Min ID", minId)
-      .textField("Max ID", maxId)
-      .label("Configure the range of texture IDs to display. Default: -1500 - 1500")
-      .divider();
+      .textField("Custom Item Count", customItemCount, {
+        description:
+          "The custom item count affects the encoding of item IDs > 255. This value should match the number of custom items registered before this add-on's items.",
+      })
+      .spacer()
+      .header("ID Range")
+      .textField("Min ID", minId, {
+        description: "min vanilla id as of 26.32 is -1125. Future updates will have increasingly negative item IDs",
+      })
+      .textField("Max ID", maxId, {
+        description:
+          "max vanilla id as of 26.32 is 845. This number will be increased by the amount of custom items from other add-ons.",
+      });
 
     try {
       await form.show();
