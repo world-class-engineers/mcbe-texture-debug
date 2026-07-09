@@ -2,7 +2,7 @@
 
 A Minecraft Bedrock add-on for debugging textures.
 
-![Texture Debug](docs/images/texture_debug.png)
+![Texture Debug](https://raw.githubusercontent.com/world-class-engineers/mcbe-texture-debug/main/docs/images/texture_debug.png)
 
 ## Why This Add-On Exists
 
@@ -41,7 +41,7 @@ Even if this add-on's hardcoded item ID list becomes outdated with a new Minecra
 
 ## Installation
 
-1. Download the `.mcaddon` file from CurseForge
+1. Download the `.mcaddon` file from CurseForge, MCPEDL, or clone and build source
 2. Open it with Minecraft Bedrock or extract and install packs in your installation folder
 3. Create or edit a world
 4. Enable the add-on's resource pack either at the world level or the global level (enabling the resource pack should automatically enable the behavior pack, but double check just to make sure).
@@ -59,8 +59,8 @@ Browse available textures and view their IDs for reference when creating add-ons
 You can configure the range of integers rendered, as well as the
 custom add-on items count to make the item descriptions line up. Use the settings button at the top of the texture browser to configure them.
 
-![Debug Settings](docs/images/settings_count.png)
-![Settings Range](docs/images/settings_range.png)
+![Debug Settings](https://raw.githubusercontent.com/world-class-engineers/mcbe-texture-debug/main/docs/images/settings_count.png)
+![Settings Range](https://raw.githubusercontent.com/world-class-engineers/mcbe-texture-debug/main/docs/images/settings_range.png)
 
 ## Troubleshooting
 
