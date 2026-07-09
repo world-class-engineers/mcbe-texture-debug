@@ -1,7 +1,7 @@
 import { inject, singleton } from "tsyringe";
 import type { CustomCommandOrigin, CustomCommandResult, Entity, Player, System } from "@minecraft/server";
 import { SYSTEM_TOKEN } from "../../shared/global-tokens";
-import { DebugSettingsModal } from "../../player/modals/debug-settings.modal";
+import { DebugSettingsModal } from "../../modals/debug-settings.modal";
 import { addOnCommand, CommandHandler, commandPermissionLevels, customCommandStatuses } from "../add-on-command";
 
 function isPlayer(entity?: Entity): entity is Player {

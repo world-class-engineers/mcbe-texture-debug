@@ -1,0 +1,37 @@
+import itemNumericalIds from "./item-numerical-ids.json";
+import { UNKNOWN_TEXTURE } from "../ui/shared-textures";
+
+type ItemIdWithKnownNumericalId = keyof typeof itemNumericalIds;
+
+const VANILLA_MAX_ID_WITHOUT_MODIFICATION = 256;
+
+/**
+ * translates an item id string to a renderable value
+ * @param itemId the `minecraft:some_id` id string
+ * @param enchanted whether the item should show as enchanted (only used with a resolved numeric ID)
+ * @returns
+ *   - the unknown texture value if the item id namespace is not 'minecraft:'
+ *   - the texture path if there is a texture override defined for the item id
+ *   - the internal runtime numeric ID
+ */
+export function getItemTexture(itemId: string, customItemCount = NaN): string | number {
+  const baseItemId = itemId.split("+")[0];
+  if (!baseItemId.startsWith("minecraft:")) {
+    return UNKNOWN_TEXTURE;
+  }
+
+  if (baseItemId in itemNumericalIds) {
+    const id = itemNumericalIds[baseItemId as ItemIdWithKnownNumericalId];
+    if (id > VANILLA_MAX_ID_WITHOUT_MODIFICATION && isNaN(customItemCount)) {
+      throw new Error(
+        `Cannot compute a runtime numeric ID for ${itemId}(${id}) without knowing how many custom items exist.`
+      );
+    }
+
+    const encoded = id + (id <= VANILLA_MAX_ID_WITHOUT_MODIFICATION ? 0 : customItemCount) * 65536;
+
+    return encoded;
+  }
+
+  return UNKNOWN_TEXTURE;
+}
