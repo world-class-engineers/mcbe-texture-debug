@@ -1,6 +1,6 @@
 {
   "name": "texture-debug",
-  "version": "0.0.1",
+  "version": "1.1.0",
   "productName": "Texture Debug",
   "description": "A Minecraft Bedrock add-on for debugging textures.",
   "private": true,

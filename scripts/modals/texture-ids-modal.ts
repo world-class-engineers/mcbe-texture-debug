@@ -12,7 +12,7 @@ import { getItemTexture } from "./item-texture";
 import { CollectionBrowserFormData } from "./custom-data-form/custom-data-form";
 import { TextureIdsSettingsModal } from "./texture-ids-settings.modal";
 import { TextureIdsSettingsService } from "./texture-ids-settings.service";
-import { BOLD, GREEN, RED, RESET } from "../shared/format-codes";
+import { BOLD, GREEN, OBFUSCATED, RED, RESET } from "../shared/format-codes";
 
 const GRID_COLUMNS = 17;
 const GRID_ROWS = 7;
@@ -114,7 +114,7 @@ export class TextureIdsModal {
       let displayName: string;
       let descLines: string[];
 
-      displayName = `${id}: ${knownItem ?? "unknown"} (${unmodifiedId})`;
+      displayName = `${id}: ${knownItem ?? `${OBFUSCATED}unknown${RESET}`} (${unmodifiedId})`;
       descLines = [];
       if (knownItem) {
         const type = this.itemTypes.get(knownItem);
