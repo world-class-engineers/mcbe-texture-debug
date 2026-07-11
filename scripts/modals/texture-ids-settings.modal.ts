@@ -41,7 +41,7 @@ export class TextureIdsSettingsModal {
       })
       .textField("Max ID", maxId, {
         description:
-          "max vanilla id as of 26.32 is 845. This number will be increased by the amount of custom items from other add-ons.",
+          "max vanilla id as of 26.32 is 845. Vanilla IDs > 256 are shifted more positive by custom items in loaded add-ons.",
       });
 
     try {
