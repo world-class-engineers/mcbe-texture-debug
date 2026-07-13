@@ -396,7 +396,8 @@
   },
 
   "inventory_slot_button_internal@common.button": {
-    "$pressed_button_name": "button.form_button_click",
+    // since there is no details view, this allows tapping buttons without closing the modal
+    // "$pressed_button_name": "button.form_button_click",
     "size": [18, 18],
     "bindings": [
       {
