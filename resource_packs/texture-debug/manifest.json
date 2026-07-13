@@ -1,13 +1,13 @@
 {
   "format_version": 2,
   "header": {
-    "name": "Texture Debug v1.1.0 Resource Pack",
+    "name": "Texture Debug v1.1.1 Resource Pack",
     "description": "Resource pack for the Texture Debug add-on",
     "uuid": "83382d5e-274f-4f66-bf6b-87d18deb909a",
     "version": [
       1,
       1,
-      0
+      1
     ],
     "min_engine_version": [
       1,
@@ -22,7 +22,7 @@
       "version": [
         1,
         1,
-        0
+        1
       ]
     }
   ],
@@ -32,7 +32,7 @@
       "version": [
         1,
         1,
-        0
+        1
       ]
     }
   ]

@@ -1,13 +1,13 @@
 {
   "format_version": 2,
   "header": {
-    "name": "Texture Debug v1.1.0",
+    "name": "Texture Debug v1.1.1",
     "description": "A Minecraft Bedrock add-on for debugging textures.",
     "uuid": "1911b502-efbf-491b-9612-5e68c2afe33c",
     "version": [
       1,
       1,
-      0
+      1
     ],
     "min_engine_version": [
       1,
@@ -22,7 +22,7 @@
       "version": [
         1,
         1,
-        0
+        1
       ]
     },
     {
@@ -33,7 +33,7 @@
       "version": [
         1,
         1,
-        0
+        1
       ]
     }
   ],
